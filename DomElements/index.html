@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container">
+
+</div>
+
+
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.js"></script>
+<link rel="stylesheet"
+      href="file:///C:/Users/Esteban.Burgueno/Desktop/Educational/Web/ReactGym/_Resources/bootstrap.css">
+
+
+<script type="text/babel">
+
+    class FontText extends React.Component {
+        constructor() {
+            super();
+            this.getNewStyle = (font) => {
+                return {
+                    fontFamily: font
+                }
+            }
+        }
+
+        render() {
+
+            return <h1
+                style={this.getNewStyle(this.props.DisplayFont)}>
+                Font
+            </h1>;
+        }
+    }
+
+    class FontTextDisplay extends React.Component {
+        render() {
+            return <div>
+                <FontText {...this.props}/>
+            </div>
+        }
+    }
+
+    class Button extends React.Component {
+        constructor() {
+            super();
+            this.style = Button._setDefaultStyle();
+            this.font = "";
+        }
+
+        static _setDefaultStyle() {
+            return {
+                display: "inline",
+                marginLeft: 5,
+                marginRight: 5,
+            };
+        }
+
+
+        render() {
+            this.font = this.props.fontFam;
+            this.clickAction = () => {
+                console.log('Click!');
+                this.props.ClickAction(this.font);
+            };
+
+            return <input className="btn btn-primary"
+                          onClick={this.clickAction}
+                          style={this.style}
+                          value={this.props.value}
+                          type="button"
+            />;
+        }
+
+    }
+
+    class ButtonDisplay extends React.Component {
+        render() {
+            return <div>
+                <Button value={1} fontFam="Calibri" {...this.props}/>
+                <Button value={2} fontFam="Times New Roman" {...this.props}/>
+                <Button value={3} fontFam="Comic Sans MS" {...this.props}/>
+            </div>
+        }
+    }
+
+    class FontTextButtonContainer extends React.Component {
+
+        constructor() {
+            super();
+            this.state = {font: "Calibri"};
+            this.changeFont = (font) => this.setState({font: font});
+        }
+
+
+        render() {
+            return <div>
+                <FontTextDisplay DisplayFont={this.state.font}/>
+                <ButtonDisplay ClickAction={this.changeFont}/>
+            </div>
+        }
+    }
+
+    let destination = document.querySelector('.container');
+    ReactDOM.render(<FontTextButtonContainer/>, destination);
+
+
+</script>
+
+</body>
+</html>
