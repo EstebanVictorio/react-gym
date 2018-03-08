@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>React</title>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
@@ -19,65 +20,35 @@
 
     let destination = document.querySelector('#container');
 
-    class Task extends React.Component {
-        render() {
-
-        }
-    }
-
     class Form extends React.Component {
-        constructor() {
-            super();
-            this.state = {};
+        constructor(props) {
+            super(props);
             this.addItem = (e) => {
-                let tasks = this.state.tasks;
-
-                tasks.push({
+                let tasks = this.props.tasks;
+                let newTask = {
                     text: this.inputElement.value,
                     key: Date.now()
-                });
-                this.setState({tasks: tasks});
+                };
+                tasks.push(newTask);
+                this.props.submitAction(tasks);
+
                 e.preventDefault();
             };
         }
 
-        componentWillMount() {
-            this.setState({tasks: this.props.tasks});
-
-        }
-
         render() {
-
             return <form onSubmit={this.addItem}>
                 <input placeholder="Enter new task " className="txtBox" type="text"
                        ref={(a) => this.inputElement = a}/>
                 <input className="bttn" type="submit" value="+"/>
-            </form>
+            </form>;
         }
     }
 
     class TodoTasks extends React.Component {
-        constructor() {
-            super();
-            this.state = {};
-        }
-
-
-        componentWillMount() {
-            this.setState({tasks: this.props.entries});
-        }
-
         render() {
-
-            let entries = this.state.tasks;
-            console.log(entries);
-            this.createTasks = (task) => {
-                console.log(task);
-                return <li key={task.key}>task.text</li>
-            };
-            let items = entries.map(this.createTasks);
             return <ul className="list">
-                {items}
+                {this.props.tasks}
             </ul>;
         }
     }
@@ -87,16 +58,19 @@
         constructor() {
             super();
             this.state = {tasks: []};
-
+            this.addTask = (tasks) => {
+                console.log(tasks[0]);
+                this.setState({tasks: tasks});
+            };
         }
 
         render() {
-            let tasks = this.state.tasks;
+
             return <div className="todoListMain">
                 <div className="header">
-                    <Form tasks={tasks}/>
+                    <Form tasks={this.state.tasks} submitAction={this.addTask}/>
                 </div>
-                <TodoTasks entries={tasks}/>
+                <TodoTasks tasks={this.state.tasks}/>
             </div>;
         }
     }
