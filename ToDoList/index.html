@@ -31,7 +31,7 @@
                 };
                 tasks.push(newTask);
                 this.props.submitAction(tasks);
-
+                this.inputElement.value = "";
                 e.preventDefault();
             };
         }
@@ -46,9 +46,19 @@
     }
 
     class TodoTasks extends React.Component {
+        constructor(props) {
+            super(props);
+            this.createTask = (task) => {
+                return <li key={task.key}>{task.text}</li>;
+            };
+            this.tasks = this.props.tasks;
+
+        }
+
         render() {
+            this.taskList = this.tasks.map(this.createTask);
             return <ul className="list">
-                {this.props.tasks}
+                {this.taskList}
             </ul>;
         }
     }
@@ -59,8 +69,7 @@
             super();
             this.state = {tasks: []};
             this.addTask = (tasks) => {
-                console.log(tasks[0]);
-                this.setState({tasks: tasks});
+                this.setState(tasks);
             };
         }
 
